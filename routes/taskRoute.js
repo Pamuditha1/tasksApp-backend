@@ -6,6 +6,7 @@ const {Task} = require('../modules/taskModule')
 
 router.get('/:id',  async (req, res) => {
 
+    //Get Tasks List Created by Perticular User
     const tasks = await Task.find({user: req.params.id})
     .populate('user', '-password')
     res.status(200).send(tasks)
@@ -14,6 +15,7 @@ router.get('/:id',  async (req, res) => {
 
 router.post('/add-task',  async (req, res) => {
 
+    //Add New Task
     let newTask = new Task({
         task: req.body.task,
         status: req.body.status,
@@ -22,7 +24,7 @@ router.post('/add-task',  async (req, res) => {
 
     newTask.save()
     .then(r => {
-
+        //Get New List
         Task.find({user: req.body.user}).populate('user', '-password').then(r => {
             res.status(200).json({
                 r: r,
@@ -40,10 +42,12 @@ router.put('/update-task/:id',  async (req, res) => {
 
     const task = await Task.findById(req.body.id)
 
+    //Update Tasks
     task.status = req.body.status
     task.save()
     .then(() => {
 
+        //Get New List
         Task.find({user: req.params.id}).populate('user', '-password').then(r => {
             res.status(200).json({
                 r: r,

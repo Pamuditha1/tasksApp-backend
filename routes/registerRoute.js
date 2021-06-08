@@ -9,9 +9,11 @@ const {User} = require('../modules/userModule')
 
 router.post('/', async (req, res) => {
     
+    //Check Current Users
     let user = await User.findOne({ email: req.body.email});
     if(user) return res.status(400).send('Already Registered')
 
+    //Create New User
     let newUser = new User({
         username: req.body.username,
         email: req.body.email ,
@@ -22,8 +24,10 @@ router.post('/', async (req, res) => {
 
     await newUser.save();
 
+    //Create Token
     const token = jwt.sign({_id : newUser._id, name: newUser.username}, env.jewtKey)
 
+    //Response
     res.status(200)
     .header('x-auth-token', token)
     .header('access-control-expose-headers', 'x-auth-token')

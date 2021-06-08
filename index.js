@@ -1,3 +1,13 @@
+//mongoDB connection string and jwt key should be stored in ./envVariables.js file.
+
+// ---->(envVariables.js)
+//    module.exports = {
+//             jewtKey : 'jwtlock',
+//             mongoDB: '********************'
+//     }
+
+
+
 const express = require('express');
 const app = express();
 const cors = require('cors')
